@@ -6,7 +6,11 @@ The interactive preview is `index.html`. It imports `player.js`, which is also t
 
 ## Preview
 
-Open `index.html` in a browser, or use the GitHub Pages deployment of this repository. Playback pauses on the 45-degree graph view when the browser requests reduced motion.
+Open `index.html` in a browser. GitHub Pages serves this same file from the `gh-pages` branch:
+
+https://mizcausevic-dev.github.io/semantic-vector-retrieval-anatomy/
+
+Playback pauses on the 45-degree graph view when the browser requests reduced motion.
 
 ## Studio and render
 

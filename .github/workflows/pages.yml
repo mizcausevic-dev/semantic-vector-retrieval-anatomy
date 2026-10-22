@@ -1,8 +1,10 @@
+# Live Pages is the gh-pages branch, served from the repository root.
+# This workflow is the alternate path if the repository source is switched to GitHub Actions.
+# It stays on workflow_dispatch so a push does not fight the branch deployment.
+
 name: pages
 
 on:
-  push:
-    branches: [main, gh-pages]
   workflow_dispatch:
 
 permissions:

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Semantic vector retrieval anatomy</title>
+  <meta name="description" content="A 34-second orthographic film of semantic vector retrieval. Tokens compact into a query embedding, the query drops into an HNSW graph, cosine similarity marks the nearest neighbors, and the top four chunks enter a context window.">
+  <link rel="canonical" href="https://mizcausevic-dev.github.io/semantic-vector-retrieval-anatomy/">
+  <meta property="og:title" content="Semantic vector retrieval anatomy">
+  <meta property="og:description" content="Watch a query move from tokens through an HNSW cosine search into a top-k context window. 1,020 frames, 30 fps.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mizcausevic-dev.github.io/semantic-vector-retrieval-anatomy/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0A0D14;
+      --panel: #121826;
+      --line: #31415C;
+      --bone: #E6E2D8;
+      --muted: #93A0B5;
+      --mint: #00F5D4;
+      --magenta: #FF007F;
+      --amber: #FFB703;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--ink); color: var(--bone); }
+    body {
+      min-height: 100vh;
+      font-family: "Space Grotesk", sans-serif;
+      background-image:
+        linear-gradient(rgba(35, 43, 62, 0.45) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(35, 43, 62, 0.45) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 48px; }
+    header { display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; margin-bottom: 18px; }
+    .kicker {
+      margin: 0 0 6px;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--mint);
+    }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 44px); font-weight: 500; letter-spacing: -0.03em; }
+    .lede { margin: 8px 0 0; max-width: 62ch; color: var(--muted); line-height: 1.45; }
+    .meta {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: right;
+      line-height: 1.6;
+    }
+    .stage {
+      position: relative;
+      border: 1px solid var(--line);
+      background: #07090f;
+      aspect-ratio: 16 / 9;
+    }
+    canvas { display: block; width: 100%; height: 100%; }
+    .controls {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      margin-top: 12px;
+    }
+    button, .time {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 12px;
+    }
+    button {
+      background: transparent;
+      color: var(--bone);
+      border: 1px solid var(--line);
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    button:hover, button:focus-visible { border-color: var(--mint); color: var(--mint); outline: none; }
+    input[type="range"] { width: 100%; accent-color: var(--magenta); }
+    .time { color: var(--amber); min-width: 11ch; text-align: right; }
+    .chapters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .note {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 78ch;
+    }
+    a { color: var(--mint); }
+    @media (max-width: 720px) {
+      header { flex-direction: column; align-items: flex-start; }
+      .meta { text-align: left; }
+      .controls { grid-template-columns: 1fr; }
+      .time { text-align: left; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div>
+        <p class="kicker">Anatomy jig · 34.00s · 30 fps</p>
+        <h1>Semantic vector retrieval</h1>
+        <p class="lede">A query moves from six tokens into a floating-point embedding, drops through an HNSW graph, and returns the four nearest chunks into a context window. The cosine numbers on screen are real dot products of the diagram vectors.</p>
+      </div>
+      <p class="meta" id="time">00:00.00 &nbsp; f0000</p>
+    </header>
+    <div class="stage">
+      <canvas id="stage" width="1920" height="1080" aria-label="Animated diagram of semantic vector retrieval"></canvas>
+    </div>
+    <div class="controls">
+      <button id="play" type="button">Pause</button>
+      <input id="scrub" type="range" min="0" max="1019" value="0" aria-label="Frame">
+      <span class="time" id="readout">00:00.00</span>
+    </div>
+    <nav class="chapters" aria-label="Chapters">
+      <button type="button" data-frame="0">01 Tokens</button>
+      <button type="button" data-frame="151">02 Drop</button>
+      <button type="button" data-frame="301">03 Sweep</button>
+      <button type="button" data-frame="511">04 Payload</button>
+      <button type="button" data-frame="751">05 Top-k</button>
+    </nav>
+    <p class="note">Diagram, not a benchmark. The drawing code uses 32-dimensional unit vectors and labels the on-screen register as 8 of 768. Chunk titles are labels for the picture. They are not citations, and they are not retrieved documents. Source and studio notes live in the <a href="https://github.com/mizcausevic-dev/semantic-vector-retrieval-anatomy">repository</a>.</p>
+  </main>
+  <script type="module">
+    import {mountPlayer} from './player.js';
+    const time = document.getElementById('time');
+    const readout = document.getElementById('readout');
+    mountPlayer(document.getElementById('stage'), {
+      play: document.getElementById('play'),
+      scrub: document.getElementById('scrub'),
+      time: {
+        set textContent(value) {
+          time.textContent = value;
+          readout.textContent = value.split('   ')[0];
+        },
+      },
+      chapters: [...document.querySelectorAll('[data-frame]')],
+    });
+  </script>
+</body>
+</html>

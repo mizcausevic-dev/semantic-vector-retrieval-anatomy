@@ -1,0 +1,25 @@
+{
+  "name": "semantic-vector-retrieval-anatomy",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Orthographic anatomy of semantic vector retrieval.",
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "still": "remotion still src/index.ts VectorAnatomy",
+    "render": "remotion render src/index.ts VectorAnatomy out/llm-vector-search-anatomy-Cursor.mp4 --jpeg-quality=95 --concurrency=2",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "@fontsource/space-grotesk": "^5.2.10",
+    "@remotion/cli": "4.0.537",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.537"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "typescript": "^5.9.3"
+  }
+}

@@ -26,4 +26,4 @@ npm run render
 
 The drawing code builds 32-dimensional unit vectors and scores them with a real dot product. The on-screen register is labeled as 8 of a 768-dimensional embedding. Chunk titles, file names, and keys are diagram labels. They are not citations and they are not retrieved documents.
 
-The picture leaves out quantization, metadata filters, hybrid lexical search, and a reranker.
+The picture leaves out quantization, metadata filters, hybrid lexical search, and a reranker. The four labeled cards are a placed cluster sorted by cosine, not the global top four. The draft that says so is `medium-semantic-vector-retrieval-Cursor.md`.
